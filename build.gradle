@@ -1,0 +1,18 @@
+apply plugin: 'java'
+
+description = "Spring MVC Tic Tac Toe"
+group = "de.christophgockel"
+version = '1.0-SNAPSHOT'
+
+allprojects {
+  sourceCompatibility = 1.7
+  targetCompatibility = 1.7
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  testCompile group: 'junit', name: 'junit', version: '4.11'
+}
