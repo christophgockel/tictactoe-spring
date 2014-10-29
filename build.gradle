@@ -34,6 +34,7 @@ repositories {
 }
 
 dependencies {
+  compile files('/Users/christoph/IdeaProjects/TicTacToe/build/libs/tictactoe-1.0-SNAPSHOT.jar')
   compile("org.springframework.boot:spring-boot-starter-thymeleaf")
   testCompile("junit:junit")
   testCompile("org.springframework.boot:spring-boot-starter-test")
