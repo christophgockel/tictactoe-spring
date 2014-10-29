@@ -53,7 +53,12 @@ public class GameControllerTest {
   }
 
   @Test
-  public void gameRedirectsToGameIndex() throws Exception {
+  public void gameRendersGameTemplate() throws Exception {
+    mvc.perform(post("/game/new")
+      .session(session)
+      .param("game_mode", "1")
+      .param("board_size", "1"));
+
     mvc.perform(get("/game")
                   .session(session)
                   .accept(MediaType.TEXT_HTML))
