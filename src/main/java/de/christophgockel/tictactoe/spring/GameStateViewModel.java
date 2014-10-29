@@ -5,19 +5,28 @@ import de.christophgockel.tictactoe.game.Input;
 import de.christophgockel.tictactoe.game.Mark;
 import de.christophgockel.tictactoe.game.Output;
 
+import java.util.LinkedList;
+
 public class GameStateViewModel implements Output, Input {
-  public int move = 0;
+  public Mark nextPlayer;
   public String status;
   public Board board;
+  private LinkedList<Integer> moves;
+  private boolean isOngoing;
+
+  public GameStateViewModel() {
+    moves = new LinkedList<>();
+    isOngoing = true;
+  }
 
   @Override
   public boolean canProvideMove() {
-    return move != 0;
+    return moves.size() > 0;
   }
 
   @Override
   public int getMove() {
-    return move;
+    return moves.pop();
   }
 
   @Override
@@ -28,20 +37,35 @@ public class GameStateViewModel implements Output, Input {
   @Override
   public void showWinner(Mark mark) {
     status = "Winner is: " + mark;
+    nextPlayer = null;
   }
 
   @Override
   public void showDraw() {
     status = "Game ended in a draw.";
+    nextPlayer = null;
   }
 
   @Override
   public void showNextPlayer(Mark mark) {
-    status = "Next player: " + mark;
+    nextPlayer = mark;
   }
 
   @Override
   public void showInvalidMoveMessage() {
     status = "Invalid move";
+  }
+
+  public void setNextMove(int move) {
+    moves.clear();
+    moves.add(move);
+  }
+
+  public void setOngoing(boolean ongoing) {
+    isOngoing = ongoing;
+  }
+
+  public boolean isOngoing() {
+    return isOngoing;
   }
 }

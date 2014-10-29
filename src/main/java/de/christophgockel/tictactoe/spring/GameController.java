@@ -21,9 +21,6 @@ public class GameController {
   public String game(HttpServletRequest request, Model model) {
     HttpSession session = request.getSession();
     GameStateViewModel viewModel = (GameStateViewModel) session.getAttribute("view_model");
-    Game game = (Game) session.getAttribute("game");
-
-    game.nextRound();
 
     model.addAttribute("model", viewModel);
     return "game";
@@ -32,17 +29,45 @@ public class GameController {
   @RequestMapping(value = "/game/new", method = POST)
   public String newGame(HttpServletRequest request, @RequestParam("game_mode") String mode, @RequestParam("board_size") String size) {
     HttpSession session = request.getSession();
+
     session.setAttribute("game_mode", mode);
     session.setAttribute("board_size", size);
 
-    PlayerPairsFactory.Pair pair = PlayerPairsFactory.getAvailablePairs().get(mode);
+    PlayerPairsFactory.Pair pair = PlayerPairsFactory.getAvailablePairs().get(new Integer(mode));
     GameStateViewModel viewModel = new GameStateViewModel();
 
     Player[] players = PlayerPairsFactory.createPair(pair, viewModel);
-    Game game = new Game(players[0], players[1], new Board(), viewModel);
+    Board board = new Board();
+
+    Game game = new Game(players[0], players[1], board, viewModel);
+    viewModel.board = board;
+
+    viewModel.setOngoing(game.isPlayable());
 
     session.setAttribute("game", game);
     session.setAttribute("view_model", viewModel);
+
+    return "redirect:/game";
+  }
+
+  @RequestMapping(value = "/game/play", method = GET)
+  public String play(HttpServletRequest request, @RequestParam(value = "move", required = false) Integer move) {
+    HttpSession session = request.getSession();
+
+    Game game = (Game) session.getAttribute("game");
+    GameStateViewModel viewModel = (GameStateViewModel) session.getAttribute("view_model");
+
+    if (move != null) {
+      viewModel.setNextMove(move);
+    }
+
+    try {
+      game.nextRound();
+      viewModel.setOngoing(game.isPlayable());
+    } catch (Game.Over over) {
+      viewModel.setOngoing(false);
+      session.setAttribute("view_model", viewModel);
+    }
 
     return "redirect:/game";
   }

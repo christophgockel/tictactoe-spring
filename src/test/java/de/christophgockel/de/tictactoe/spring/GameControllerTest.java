@@ -1,6 +1,8 @@
 package de.christophgockel.de.tictactoe.spring;
 
+import de.christophgockel.tictactoe.game.Mark;
 import de.christophgockel.tictactoe.spring.Application;
+import de.christophgockel.tictactoe.spring.GameStateViewModel;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -85,5 +87,21 @@ public class GameControllerTest {
       .param("board_size", "24"));
 
     assertNotNull(session.getAttribute("game"));
+    assertNotNull(session.getAttribute("view_model"));
+  }
+
+  @Test
+  public void playPlacesAMove() throws Exception {
+    mvc.perform(post("/game/new")
+      .session(session)
+      .param("game_mode", "1")
+      .param("board_size", "1"));
+
+    mvc.perform(get("/game/play?move=1")
+      .session(session));
+
+    GameStateViewModel gameState = (GameStateViewModel) session.getAttribute("view_model");
+
+    assertEquals(Mark.X, gameState.board.getMarks().get(1));
   }
 }
