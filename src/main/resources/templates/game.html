@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Spring Tic Tac Toe</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  </head>
+
+  <body>
+    <h1>Tic Tac Toe</h1>
+    <h2>Game</h2>
+    Status:<p th:text="${model.status}"></p>
+
+    <table>
+      <!--/*/ <th-block data-th-each="mark : ${model.board.getMarks()}"> /*/-->
+      <tr>
+        <td th:text="${mark.key}">...</td>
+        <td>
+          <a th:if="${mark.value != null}" th:href="|/game/play/${mark.key}|" th:text="${mark.value}"></a>
+        </td>
+      </tr>
+      <!--/*/ </th-block> /*/-->
+    </table>
+  </body>
+</html>
