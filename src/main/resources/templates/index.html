@@ -7,5 +7,26 @@
 
   <body>
     <h1>Tic Tac Toe</h1>
+
+    <form method="post" action="/game/new">
+      <fieldset>
+        <legend>Board Size</legend>
+
+        <label th:each="size : ${sizes}">
+          <input type="radio" name="board_size" th:value="${size.value}"/>
+          <span th:text="${size.value.getDescription()}"></span>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Game Mode</legend>
+
+        <label th:each="mode : ${modes}">
+          <input type="radio" name="game_mode" th:value="${mode.key}"/>
+          <span th:text="${mode.value.getDescription()}"></span>
+        </label>
+      </fieldset>
+      <button type="submit">Play!</button>
+    </form>
   </body>
 </html>
