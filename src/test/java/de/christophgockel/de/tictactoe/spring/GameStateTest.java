@@ -1,14 +1,14 @@
 package de.christophgockel.de.tictactoe.spring;
 
-import de.christophgockel.tictactoe.spring.GameStateViewModel;
+import de.christophgockel.tictactoe.spring.GameState;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class GameStateViewModelTest {
+public class GameStateTest {
   @Test
   public void canSetANewMove() {
-    GameStateViewModel model = new GameStateViewModel();
+    GameState model = new GameState();
     model.setNextMove(3);
 
     assertEquals(3, model.getMove());
@@ -16,7 +16,7 @@ public class GameStateViewModelTest {
 
   @Test
   public void settingAMoveEnablesGamePlay() {
-    GameStateViewModel model = new GameStateViewModel();
+    GameState model = new GameState();
     model.setNextMove(3);
 
     assertTrue(model.canProvideMove());
@@ -24,7 +24,7 @@ public class GameStateViewModelTest {
 
   @Test
   public void onlyOneMoveCanBeSetAtATime() {
-    GameStateViewModel model = new GameStateViewModel();
+    GameState model = new GameState();
     model.setNextMove(1);
     model.setNextMove(2);
     model.setNextMove(3);
