@@ -4,37 +4,27 @@
     <title>Spring Tic Tac Toe</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta th:if="${model.isOngoing() == true}" http-equiv="refresh" content="1;URL=/game/play"/>
-    <style type="text/css">
-      div.board-container {
-        max-width: 300px;
-      }
-      div.board-container div {
-        max-width: 100px;
-        display: inline-block;
-        width: 15%;
-      }
-    </style>
   </head>
 
   <body>
     <h1>Tic Tac Toe</h1>
     <h2>Game</h2>
 
+    <table>
+      <tr th:each="row : ${model.getBoardRows()}">
+        <td th:each="cell : ${row}">
+          <span th:if="${cell != null}" th:text="${cell}"></span>
+          <a th:if="${cell == null}" th:href="|/game/play?move=${rowStat.size * rowStat.index + cellStat.count}|" th:text="|${rowStat.size * rowStat.index + cellStat.count}|"></a>
+        </td>
+      </tr>
+    </table>
+
     <p th:if="${model.status}">
-      Status:<br/>
       <span th:text="${model.status}"></span>
     </p>
+
     <p th:if="${model.nextPlayer}">
       Next Player: <span th:text="${model.nextPlayer}"></span>
     </p>
-
-    <div class="board-container">
-      <!--/*/ <th-block data-th-each="mark, iteration : ${model.board.getMarks()}"> /*/-->
-        <div>
-          <a th:if="${mark.value == null}" th:href="|/game/play?move=${mark.key}|" th:text="${mark.key}"></a>
-          <span th:if="${mark.value != null}" th:text="${mark.value}"></span>
-        </div>
-      <!--/*/ </th-block> /*/-->
-    </div>
   </body>
 </html>

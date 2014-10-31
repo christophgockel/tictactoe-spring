@@ -6,6 +6,7 @@ import de.christophgockel.tictactoe.game.Mark;
 import de.christophgockel.tictactoe.game.Output;
 
 import java.util.LinkedList;
+import java.util.Map;
 
 public class GameState implements Output, Input {
   private Mark nextPlayer;
@@ -71,5 +72,24 @@ public class GameState implements Output, Input {
 
   public Mark getNextPlayer() {
     return nextPlayer;
+  }
+
+  public Mark[][] getBoardRows() {
+    int sideLength = board.getSideLength();
+    Mark[][] rows = new Mark[sideLength][];
+    Mark[] row;
+    Map<Integer, Mark> marks = board.getMarks();
+
+    for (int i = 0; i < sideLength; i++) {
+      row = new Mark[sideLength];
+
+      for (int j = 0; j < sideLength; j++) {
+        row[j] = marks.get(i * sideLength + j + 1);
+      }
+
+      rows[i] = row;
+    }
+
+    return rows;
   }
 }
