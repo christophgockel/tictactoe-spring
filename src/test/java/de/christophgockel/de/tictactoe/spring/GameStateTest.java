@@ -1,35 +1,48 @@
 package de.christophgockel.de.tictactoe.spring;
 
+import de.christophgockel.tictactoe.game.Mark;
 import de.christophgockel.tictactoe.spring.GameState;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class GameStateTest {
+  private GameState state;
+
+  @Before
+  public void setup() {
+    state = new GameState();
+  }
+
   @Test
   public void canSetANewMove() {
-    GameState model = new GameState();
-    model.setNextMove(3);
+    state.setNextMove(3);
 
-    assertEquals(3, model.getMove());
+    assertEquals(3, state.getMove());
   }
 
   @Test
   public void settingAMoveEnablesGamePlay() {
-    GameState model = new GameState();
-    model.setNextMove(3);
+    state.setNextMove(3);
 
-    assertTrue(model.canProvideMove());
+    assertTrue(state.canProvideMove());
   }
 
   @Test
   public void onlyOneMoveCanBeSetAtATime() {
-    GameState model = new GameState();
-    model.setNextMove(1);
-    model.setNextMove(2);
-    model.setNextMove(3);
-    model.getMove();
+    state.setNextMove(1);
+    state.setNextMove(2);
+    state.setNextMove(3);
+    state.getMove();
 
-    assertFalse(model.canProvideMove());
+    assertFalse(state.canProvideMove());
+  }
+
+  @Test
+  public void returnsTheNextPlayer() {
+    state.showNextPlayer(Mark.O);
+
+    assertEquals(Mark.O, state.getNextPlayer());
   }
 }

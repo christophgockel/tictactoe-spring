@@ -1,8 +1,6 @@
 package de.christophgockel.tictactoe.spring;
 
 import de.christophgockel.tictactoe.game.Board;
-import de.christophgockel.tictactoe.game.Game;
-import de.christophgockel.tictactoe.game.Player;
 import de.christophgockel.tictactoe.game.PlayerPairsFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,58 +15,55 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @Controller
 public class GameController {
+  private PlayGameUseCase useCase;
+
   @RequestMapping(value = "/game", method = GET)
   public String game(HttpServletRequest request, Model model) {
-    HttpSession session = request.getSession();
-    GameStateViewModel viewModel = (GameStateViewModel) session.getAttribute("view_model");
+    useCase = getUseCaseFromSession(request);
+    model.addAttribute("model", useCase.getGameState());
 
-    model.addAttribute("model", viewModel);
     return "game";
   }
 
   @RequestMapping(value = "/game/new", method = POST)
-  public String newGame(HttpServletRequest request, @RequestParam("game_mode") String mode, @RequestParam("board_size") String size) {
+  public String newGame(HttpServletRequest request, @RequestParam("game_mode") int mode, @RequestParam("board_size") int size) {
     HttpSession session = request.getSession();
+    RequestConverter converter = new RequestConverter();
 
-    session.setAttribute("game_mode", mode);
-    session.setAttribute("board_size", size);
 
-    PlayerPairsFactory.Pair pair = PlayerPairsFactory.getAvailablePairs().get(new Integer(mode));
-    GameStateViewModel viewModel = new GameStateViewModel();
+    PlayerPairsFactory.Pair pair = converter.convertPair(mode);
+    Board.Size boardSize = converter.convertSize(size);
 
-    Player[] players = PlayerPairsFactory.createPair(pair, viewModel);
-    Board board = new Board();
+    useCase = new PlayGameUseCase();
+    useCase.newGame(pair, boardSize);
 
-    Game game = new Game(players[0], players[1], board, viewModel);
-    viewModel.board = board;
-
-    viewModel.setOngoing(game.isPlayable());
-
-    session.setAttribute("game", game);
-    session.setAttribute("view_model", viewModel);
+    setUseCaseIntoSession(request, useCase);
 
     return "redirect:/game";
   }
 
   @RequestMapping(value = "/game/play", method = GET)
   public String play(HttpServletRequest request, @RequestParam(value = "move", required = false) Integer move) {
-    HttpSession session = request.getSession();
+    useCase = getUseCaseFromSession(request);
 
-    Game game = (Game) session.getAttribute("game");
-    GameStateViewModel viewModel = (GameStateViewModel) session.getAttribute("view_model");
-
-    if (move != null) {
-      viewModel.setNextMove(move);
-    }
-
-    try {
-      game.nextRound();
-      viewModel.setOngoing(game.isPlayable());
-    } catch (Game.Over over) {
-      viewModel.setOngoing(false);
-      session.setAttribute("view_model", viewModel);
+    if (move == null) {
+      useCase.playMove(0);
+    } else {
+      useCase.playMove(move);
     }
 
     return "redirect:/game";
+  }
+
+  private PlayGameUseCase getUseCaseFromSession(HttpServletRequest request) {
+    HttpSession session = request.getSession();
+
+    return (PlayGameUseCase) session.getAttribute("use_case");
+  }
+
+  private void setUseCaseIntoSession(HttpServletRequest request, PlayGameUseCase useCase) {
+    HttpSession session = request.getSession();
+
+    session.setAttribute("use_case", useCase);
   }
 }

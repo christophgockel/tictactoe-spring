@@ -13,7 +13,7 @@
         <legend>Board Size</legend>
 
         <label th:each="size : ${sizes}">
-          <input type="radio" name="board_size" th:value="${size.value}"/>
+          <input type="radio" name="board_size" th:value="${size.key}"/>
           <span th:text="${size.value.getDescription()}"></span>
         </label>
       </fieldset>

@@ -8,7 +8,7 @@ import de.christophgockel.tictactoe.game.Output;
 import java.util.LinkedList;
 
 public class GameState implements Output, Input {
-  public Mark nextPlayer;
+  private Mark nextPlayer;
   public String status;
   public Board board;
   private LinkedList<Integer> moves;
@@ -67,5 +67,9 @@ public class GameState implements Output, Input {
 
   public boolean isOngoing() {
     return isOngoing;
+  }
+
+  public Mark getNextPlayer() {
+    return nextPlayer;
   }
 }
