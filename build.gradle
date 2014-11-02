@@ -1,21 +1,11 @@
-buildscript {
-  repositories {
-    maven { url "http://repo.spring.io/libs-release" }
-    mavenLocal()
-    mavenCentral()
-  }
-  dependencies {
-    classpath("org.springframework.boot:spring-boot-gradle-plugin:1.1.8.RELEASE")
-  }
-}
-
-apply plugin: 'java'
-apply plugin: 'idea'
-apply plugin: 'spring-boot'
+apply plugin: "java"
+apply plugin: "idea"
+apply plugin: "war"
+apply plugin: "jetty"
 
 description = "Spring MVC Tic Tac Toe"
 group = "de.christophgockel"
-version = '1.0-SNAPSHOT'
+version = "1.0-SNAPSHOT"
 
 allprojects {
   sourceCompatibility = 1.7
@@ -23,8 +13,8 @@ allprojects {
 }
 
 jar {
-  baseName = 'tictactoe-servlet'
-  version =  '0.0.1'
+  baseName = "tictactoe-servlet"
+  version =  "0.0.1"
 }
 
 repositories {
@@ -34,11 +24,17 @@ repositories {
 }
 
 dependencies {
-  compile files('/Users/christoph/IdeaProjects/TicTacToe/build/libs/tictactoe-1.0-SNAPSHOT.jar')
-  compile("org.springframework.boot:spring-boot-starter-thymeleaf")
-  testCompile("junit:junit")
-  testCompile("org.springframework.boot:spring-boot-starter-test")
+  compile files("/Users/christoph/IdeaProjects/TicTacToe/build/libs/tictactoe-1.0-SNAPSHOT.jar")
+
+  providedCompile "javax.servlet:servlet-api:2.5"
+  compile "org.springframework:spring-webmvc:4.1.1.RELEASE"
+
+  testCompile "junit:junit:4.11"
+  testCompile "org.hamcrest:hamcrest-all:1.3"
+  testCompile "org.springframework:spring-test:4.1.1.RELEASE"
 }
+
+jettyRunWar.contextPath = ""
 
 task wrapper(type: Wrapper) {
   gradleVersion = "1.11"
