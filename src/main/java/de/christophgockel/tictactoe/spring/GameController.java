@@ -26,16 +26,16 @@ public class GameController {
   }
 
   @RequestMapping(value = "/game/new", method = POST)
-  public String newGame(HttpServletRequest request, @RequestParam("game_mode") int mode, @RequestParam("board_size") int size) {
+  public String newGame(HttpServletRequest request, @RequestParam("player_pair") int pair, @RequestParam("board_size") int size) {
     HttpSession session = request.getSession();
     RequestConverter converter = new RequestConverter();
 
 
-    PlayerPairsFactory.Pair pair = converter.convertPair(mode);
+    PlayerPairsFactory.Pair playerPair = converter.convertPair(pair);
     Board.Size boardSize = converter.convertSize(size);
 
     useCase = new PlayGameUseCase();
-    useCase.newGame(pair, boardSize);
+    useCase.newGame(playerPair, boardSize);
 
     setUseCaseIntoSession(request, useCase);
 

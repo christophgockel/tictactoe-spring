@@ -3,6 +3,7 @@ package de.christophgockel.de.tictactoe.spring;
 import de.christophgockel.tictactoe.game.Mark;
 import de.christophgockel.tictactoe.spring.GameState;
 import de.christophgockel.tictactoe.spring.PlayGameUseCase;
+import org.junit.Before;
 import org.junit.Test;
 
 import static de.christophgockel.tictactoe.game.Board.Size.ThreeByThree;
@@ -13,10 +14,17 @@ import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.*;
 
 public class PlayGameUseCaseTest {
+  private PlayGameUseCase useCase;
+  private GameState gameState;
+
+  @Before
+  public void setup() {
+    gameState = new GameState();
+    useCase = new PlayGameUseCase(gameState);
+  }
+
   @Test
   public void createsANewGame() {
-    PlayGameUseCase useCase = new PlayGameUseCase();
-
     useCase.newGame(HumanHuman, ThreeByThree);
 
     assertNotNull(useCase.getGameState());
@@ -24,27 +32,24 @@ public class PlayGameUseCaseTest {
 
   @Test
   public void playingARoundChangesTheBoard() {
-    PlayGameUseCase useCase = new PlayGameUseCase();
     useCase.newGame(HumanHuman, ThreeByThree);
 
     useCase.playMove(1);
 
-    assertEquals(8, useCase.getGameState().board.getFreeLocations().size());
+    assertEquals(8, gameState.getBoard().getFreeLocations().size());
   }
 
   @Test
   public void playsARoundOfTheGame() {
-    PlayGameUseCase useCase = new PlayGameUseCase();
     useCase.newGame(HumanHuman, ThreeByThree);
 
     useCase.playMove(1);
 
-    assertEquals(Mark.O, useCase.getGameState().getNextPlayer());
+    assertEquals(Mark.O, gameState.getNextPlayer());
   }
 
   @Test
   public void playsRounds() {
-    PlayGameUseCase useCase = new PlayGameUseCase();
     useCase.newGame(HumanHuman, ThreeByThree);
 
     useCase.playMove(1);
@@ -53,12 +58,11 @@ public class PlayGameUseCaseTest {
     useCase.playMove(8);
     useCase.playMove(3);
 
-    assertThat(useCase.getGameState().status, containsString(Mark.X.toString()));
+    assertThat(gameState.getStatus(), containsString(Mark.X.toString()));
   }
 
   @Test
   public void isNotOngoingWhenOver() {
-    PlayGameUseCase useCase = new PlayGameUseCase();
     useCase.newGame(HumanHuman, ThreeByThree);
 
     useCase.playMove(1);
@@ -67,28 +71,22 @@ public class PlayGameUseCaseTest {
     useCase.playMove(8);
     useCase.playMove(3);
 
-    assertFalse(useCase.getGameState().isOngoing());
+    assertFalse(gameState.getIsOngoing());
   }
 
   @Test
   public void isNotOngoingWhenWaitingForInput() {
-    GameState state = new GameState();
-    PlayGameUseCase useCase = new PlayGameUseCase(state);
-
     useCase.newGame(HumanHuman, ThreeByThree);
     useCase.playMove(1);
 
-    assertFalse(state.isOngoing());
+    assertFalse(gameState.getIsOngoing());
   }
 
   @Test
   public void isOngoingAsLongAsPlayersCanProvideInput() {
-    GameState state = new GameState();
-    PlayGameUseCase useCase = new PlayGameUseCase(state);
-
     useCase.newGame(ComputerComputer, ThreeByThree);
     useCase.playMove(1);
 
-    assertTrue(state.isOngoing());
+    assertTrue(gameState.getIsOngoing());
   }
 }

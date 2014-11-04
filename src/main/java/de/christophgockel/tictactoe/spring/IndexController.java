@@ -12,9 +12,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 public class IndexController {
   @RequestMapping(value = "/", method = GET)
   public String index(Model model) {
-    model.addAttribute("modes", PlayerPairsFactory.getAvailablePairs());
-    model.addAttribute("sizes", Board.getAvailableSizes());
-
+    IndexViewModel viewModel = new IndexViewModel(Board.getAvailableSizes(), PlayerPairsFactory.getAvailablePairs());
+    model.addAttribute("model", viewModel);
     return "index";
   }
 }
