@@ -6,7 +6,9 @@ import de.christophgockel.tictactoe.spring.GameState;
 import org.junit.Before;
 import org.junit.Test;
 
-import static de.christophgockel.tictactoe.game.Board.Size.FourByFour;
+import static de.christophgockel.tictactoe.game.Board.Size.ThreeByThree;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.*;
 
 public class GameStateTest {
@@ -49,38 +51,31 @@ public class GameStateTest {
   }
 
   @Test
-  public void returnsBoardRowsAsArrayOfMaps() {
-    Board board = new Board();
-    board = board.setMove(1, Mark.X)
-                 .setMove(5, Mark.O)
-                 .setMove(9, Mark.X);
-    state.show(board);
-
-    Mark[][] marks = new Mark[][] {
-      { Mark.X, null, null },
-      { null, Mark.O, null },
-      { null, null, Mark.X }
-    };
-
-    assertEquals(marks, state.getBoardRows());
+  public void initialStateHasNoStatus() {
+    assertThat(state.getStatus(), is(""));
   }
 
   @Test
-  public void returnsBoardRowsFor4x4AsArrayOfMaps() {
-    Board board = new Board(FourByFour);
-    board = board.setMove(1, Mark.X)
-      .setMove(6, Mark.O)
-      .setMove(11, Mark.O)
-      .setMove(16, Mark.X);
-    state.show(board);
+  public void announcingDrawChangesStatus() {
+    state.showDraw();
+    assertThat(state.getStatus(), is(not("")));
+  }
 
-    Mark[][] marks = new Mark[][] {
-      { Mark.X, null, null, null },
-      { null, Mark.O, null, null },
-      { null, null, Mark.O, null },
-      { null, null, null, Mark.X }
-    };
+  @Test
+  public void announcingWinnerChangesStatus() {
+    state.showWinner(Mark.X);
+    assertThat(state.getStatus(), is(not("")));
+  }
 
-    assertEquals(marks, state.getBoardRows());
+  @Test
+  public void announcingInvalidMoveChangesStatus() {
+    state.showInvalidMoveMessage();
+    assertThat(state.getStatus(), is(not("")));
+  }
+
+  @Test
+  public void knowsBoardSize() {
+    state.show(new Board(ThreeByThree));
+    assertEquals(3, state.getBoardSize());
   }
 }

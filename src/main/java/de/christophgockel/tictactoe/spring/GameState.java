@@ -6,18 +6,18 @@ import de.christophgockel.tictactoe.game.Mark;
 import de.christophgockel.tictactoe.game.Output;
 
 import java.util.LinkedList;
-import java.util.Map;
 
 public class GameState implements Output, Input {
   private Mark nextPlayer;
-  public String status;
-  public Board board;
+  private String status;
+  private Board board;
   private LinkedList<Integer> moves;
   private boolean isOngoing;
 
   public GameState() {
     moves = new LinkedList<>();
     isOngoing = true;
+    status = "";
   }
 
   @Override
@@ -66,7 +66,7 @@ public class GameState implements Output, Input {
     isOngoing = ongoing;
   }
 
-  public boolean isOngoing() {
+  public boolean getIsOngoing() {
     return isOngoing;
   }
 
@@ -74,22 +74,15 @@ public class GameState implements Output, Input {
     return nextPlayer;
   }
 
-  public Mark[][] getBoardRows() {
-    int sideLength = board.getSideLength();
-    Mark[][] rows = new Mark[sideLength][];
-    Mark[] row;
-    Map<Integer, Mark> marks = board.getMarks();
+  public String getStatus() {
+    return status;
+  }
 
-    for (int i = 0; i < sideLength; i++) {
-      row = new Mark[sideLength];
+  public Board getBoard() {
+    return board;
+  }
 
-      for (int j = 0; j < sideLength; j++) {
-        row[j] = marks.get(i * sideLength + j + 1);
-      }
-
-      rows[i] = row;
-    }
-
-    return rows;
+  public int getBoardSize() {
+    return board.getSideLength();
   }
 }
