@@ -21,4 +21,14 @@ public class RequestConverterTest {
 
     assertEquals(Board.Size.FourByFour, converter.convertSize(2));
   }
+
+  @Test(expected = RequestConverter.InvalidId.class)
+  public void throwsExceptionOnInvalidPairId() {
+    new RequestConverter().convertPair(134);
+  }
+
+  @Test(expected = RequestConverter.InvalidId.class)
+  public void throwsExceptionOnInvalidBoardSizeId() {
+    new RequestConverter().convertSize(442);
+  }
 }

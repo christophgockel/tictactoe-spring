@@ -1,14 +1,32 @@
 package de.christophgockel.tictactoe.spring;
 
 import de.christophgockel.tictactoe.game.Board;
-import de.christophgockel.tictactoe.game.PlayerPairsFactory;
+
+import static de.christophgockel.tictactoe.game.Board.Size;
+import static de.christophgockel.tictactoe.game.PlayerPairsFactory.Pair;
+import static de.christophgockel.tictactoe.game.PlayerPairsFactory.getAvailablePairs;
 
 public class RequestConverter {
-  public PlayerPairsFactory.Pair convertPair(int id) {
-    return PlayerPairsFactory.getAvailablePairs().get(id);
+  public Pair convertPair(int id) {
+    Pair pair = getAvailablePairs().get(id);
+
+    if (pair == null) {
+      throw new InvalidId();
+    }
+
+    return pair;
   }
 
-  public Board.Size convertSize(int id) {
-    return Board.getAvailableSizes().get(id);
+  public Size convertSize(int id) {
+    Size size = Board.getAvailableSizes().get(id);
+
+    if (size == null) {
+      throw new InvalidId();
+    }
+
+    return size;
+  }
+
+  public class InvalidId extends RuntimeException {
   }
 }
