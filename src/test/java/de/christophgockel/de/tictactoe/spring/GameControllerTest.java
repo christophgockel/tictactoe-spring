@@ -53,7 +53,8 @@ public class GameControllerTest {
                 .param("player_pair", "1")
                 .param("board_size", "1")
        .accept(MediaType.TEXT_HTML))
-       .andExpect(status().is3xxRedirection());
+       .andExpect(status().is3xxRedirection())
+       .andExpect(view().name("redirect:/game"));
   }
 
   @Test
@@ -83,5 +84,14 @@ public class GameControllerTest {
     mvc.perform(get("/game/play?move=1").session(session));
 
     verify(playGameUseCase).playMove(anyInt());
+  }
+
+  @Test
+  public void gameRedirectsToRootIfNoGameIsAvailable() throws Exception {
+    mvc.perform(get("/game")
+                .session(session)
+                .accept(MediaType.TEXT_HTML))
+       .andExpect(status().is3xxRedirection())
+       .andExpect(view().name("redirect:/"));
   }
 }

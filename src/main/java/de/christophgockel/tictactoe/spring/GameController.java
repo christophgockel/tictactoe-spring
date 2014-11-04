@@ -20,9 +20,14 @@ public class GameController {
   @RequestMapping(value = "/game", method = GET)
   public String game(HttpServletRequest request, Model model) {
     useCase = getUseCaseFromSession(request);
-    model.addAttribute("model", useCase.getGameState());
 
-    return "game";
+    if (useCase == null) {
+      return "redirect:/";
+    } else {
+      model.addAttribute("model", useCase.getGameState());
+
+      return "game";
+    }
   }
 
   @RequestMapping(value = "/game/new", method = POST)
