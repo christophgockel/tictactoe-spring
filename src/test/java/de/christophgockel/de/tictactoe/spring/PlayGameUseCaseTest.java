@@ -89,4 +89,13 @@ public class PlayGameUseCaseTest {
 
     assertTrue(gameState.getIsOngoing());
   }
+
+  @Test
+  public void doesNotPlayAMoveWhenMoveIsZero() {
+    useCase.newGame(HumanHuman, ThreeByThree);
+    useCase.playMove(0);
+
+    assertEquals(Mark.X, gameState.getNextPlayer());
+    assertEquals("", gameState.getStatus());
+  }
 }
