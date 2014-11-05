@@ -25,7 +25,7 @@
 
     <table>
       <c:forEach items="${model.board.marks}" var="mark" varStatus="markStatus">
-        <c:if test="${markStatus.index % 3 == 0}">
+        <c:if test="${markStatus.index % model.boardSize == 0}">
           <tr>
         </c:if>
 
@@ -40,7 +40,7 @@
           </c:choose>
         </td>
 
-        <c:if test="${markStatus.count % 3 == 0}">
+        <c:if test="${markStatus.count % model.boardSize == 0}">
           </tr>
         </c:if>
       </c:forEach>
