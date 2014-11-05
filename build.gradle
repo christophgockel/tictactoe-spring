@@ -28,6 +28,7 @@ dependencies {
 
   providedCompile "javax.servlet:servlet-api:2.5"
   providedCompile "org.apache.geronimo.specs:geronimo-servlet_3.0_spec:1.0"
+  compile "jstl:jstl:1.2"
   compile "org.springframework:spring-webmvc:4.1.1.RELEASE"
 
   testCompile "junit:junit:4.11"
@@ -39,5 +40,5 @@ dependencies {
 jettyRunWar.contextPath = ""
 
 task wrapper(type: Wrapper) {
-  gradleVersion = "1.11"
+  gradleVersion = "2.0"
 }

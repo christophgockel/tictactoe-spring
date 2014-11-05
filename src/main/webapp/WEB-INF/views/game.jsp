@@ -5,7 +5,7 @@
     <title>Spring Tic Tac Toe</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <c:if test="${model.isOngoing}">
-      <meta http-equiv="refresh" content="1;URL=/game/play"/>
+      <meta http-equiv="refresh" content="1;URL=${pageContext.request.contextPath}/game/play"/>
     </c:if>
     <style type="text/css">
       table {
@@ -57,6 +57,6 @@
         Next Player: <span>${model.nextPlayer}</span>
       </p>
     </c:if>
-    <p><a href="/">Back to Menu</a></p>
+    <p><a href="${pageContext.request.contextPath}/">Back to Menu</a></p>
   </body>
 </html>

@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -9,7 +10,7 @@
   <body>
     <h1>Tic Tac Toe</h1>
 
-    <form method="post" action="/game/new">
+    <form:form method="post" action="${pageContext.request.contextPath}/game/new">
       <fieldset>
         <legend>Board Size</legend>
 
@@ -43,6 +44,6 @@
       </fieldset>
 
       <button type="submit">Play!</button>
-    </form>
+    </form:form>
   </body>
 </html>
