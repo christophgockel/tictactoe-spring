@@ -52,7 +52,7 @@ public class GameController {
     useCase = getUseCaseFromSession(request);
 
     if (move == null) {
-      useCase.playMove(0);
+      useCase.playMove();
     } else {
       useCase.playMove(move);
     }

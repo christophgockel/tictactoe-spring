@@ -32,10 +32,11 @@ public class PlayGameUseCase {
   }
 
   public void playMove(int move) {
-    if (move > 0) {
-      gameState.setNextMove(move);
-    }
+    gameState.setNextMove(move);
+    playNextRound();
+  }
 
+  public void playMove() {
     playNextRound();
   }
 

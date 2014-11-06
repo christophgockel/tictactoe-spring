@@ -87,6 +87,14 @@ public class GameControllerTest {
   }
 
   @Test
+  public void placesAComputerPlayerMove() throws Exception {
+    session.setAttribute("use_case", playGameUseCase);
+    mvc.perform(get("/game/play").session(session));
+
+    verify(playGameUseCase).playMove();
+  }
+
+  @Test
   public void gameRedirectsToRootIfNoGameIsAvailable() throws Exception {
     mvc.perform(get("/game")
                 .session(session)

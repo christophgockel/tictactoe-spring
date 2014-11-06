@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import static de.christophgockel.tictactoe.game.Board.Size.ThreeByThree;
 import static de.christophgockel.tictactoe.game.PlayerPairsFactory.Pair.ComputerComputer;
+import static de.christophgockel.tictactoe.game.PlayerPairsFactory.Pair.ComputerHuman;
 import static de.christophgockel.tictactoe.game.PlayerPairsFactory.Pair.HumanHuman;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -91,11 +92,10 @@ public class PlayGameUseCaseTest {
   }
 
   @Test
-  public void doesNotPlayAMoveWhenMoveIsZero() {
-    useCase.newGame(HumanHuman, ThreeByThree);
-    useCase.playMove(0);
+  public void computerMovesDoNotNeedALocation() {
+    useCase.newGame(ComputerHuman, ThreeByThree);
+    useCase.playMove();
 
-    assertEquals(Mark.X, gameState.getNextPlayer());
-    assertEquals("", gameState.getStatus());
+    assertEquals(Mark.O, gameState.getNextPlayer());
   }
 }
